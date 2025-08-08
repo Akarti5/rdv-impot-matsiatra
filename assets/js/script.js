@@ -23,8 +23,28 @@ async function apiPost(path, formData) {
 function showMessage(id, payload) {
   const el = document.getElementById(id);
   if (!el) return;
+  
   el.textContent = payload.message || '';
   el.style.color = payload.ok ? '#065f46' : '#991b1b';
+  el.style.backgroundColor = payload.ok ? '#ecfdf5' : '#fef2f2';
+  el.style.border = payload.ok ? '1px solid #10b981' : '1px solid #ef4444';
+  el.style.padding = '10px';
+  el.style.borderRadius = '5px';
+  el.style.marginTop = '10px';
+  el.style.fontWeight = '500';
+  
+  // Auto-hide success messages after 5 seconds
+  if (payload.ok) {
+    setTimeout(() => {
+      el.textContent = '';
+      el.style.backgroundColor = '';
+      el.style.border = '';
+      el.style.padding = '';
+      el.style.borderRadius = '';
+      el.style.marginTop = '';
+      el.style.fontWeight = '';
+    }, 5000);
+  }
 }
 
 // Global logout

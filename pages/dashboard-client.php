@@ -31,7 +31,7 @@
           <label for="appt-notes">Notes</label>
           <textarea id="appt-notes" name="notes_client" rows="3" placeholder="Informations complémentaires (facultatif)"></textarea>
         </div>
-        <button class="btn">Confirmer le rendez-vous</button>
+        <button type="submit" class="btn">Confirmer le rendez-vous</button>
         <div id="appointment-message" class="form-message" aria-live="polite"></div>
       </form>
     </div>
@@ -71,15 +71,42 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('appointment-form').addEventListener('submit', async (e) => {
     e.preventDefault();
     const form = e.currentTarget;
-    const fd = new FormData(form);
-    console.log('Submitting appointment form...');
-    const res = await apiPost('appointments.php?action=create', fd);
-    console.log('Appointment creation response:', res);
-    showMessage('appointment-message', res);
-    if (res.ok) {
-      form.reset();
-      console.log('Appointment created successfully, refreshing list...');
-      loadClientAppointments();
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const originalText = submitBtn.textContent;
+    
+    // Disable button and show loading state
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Création en cours...';
+    
+    try {
+      const fd = new FormData(form);
+      console.log('Submitting appointment form...');
+      console.log('Form data:', Object.fromEntries(fd.entries()));
+      
+      const res = await apiPost('appointments.php?action=create', fd);
+      console.log('Appointment creation response:', res);
+      
+      showMessage('appointment-message', res);
+      
+      if (res.ok) {
+        // Only reset form on success
+        form.reset();
+        console.log('Appointment created successfully, refreshing list...');
+        loadClientAppointments();
+      } else {
+        // Don't reset form on error, let user see their data
+        console.error('Appointment creation failed:', res.message);
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      showMessage('appointment-message', {
+        ok: false, 
+        message: 'Erreur de connexion. Veuillez réessayer.'
+      });
+    } finally {
+      // Re-enable button
+      submitBtn.disabled = false;
+      submitBtn.textContent = originalText;
     }
   });
 });

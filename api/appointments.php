@@ -25,14 +25,24 @@ try {
   if ($action === 'create') {
     requireLogin('client');
     if (!verify_csrf($_POST['_csrf'] ?? null)) jsonResponse(['ok' => false, 'message' => 'CSRF token invalide'], 400);
+    
+    // Debug: Log the current user and POST data
+    $currentUser = currentUser();
+    error_log("Current user: " . json_encode($currentUser));
+    error_log("POST data: " . json_encode($_POST));
+    
     $payload = [
-      'user_id' => currentUser()['id'],
+      'user_id' => $currentUser['id'],
       'agent_id' => (int)($_POST['agent_id'] ?? 0),
       'date_rdv' => (string)($_POST['date_rdv'] ?? ''),
       'heure_rdv' => (string)($_POST['heure_rdv'] ?? ''),
       'motif' => trim((string)($_POST['motif'] ?? '')),
       'notes_client' => trim((string)($_POST['notes_client'] ?? '')),
     ];
+    
+    // Debug: Log the payload being sent to create function
+    error_log("Payload for appointment creation: " . json_encode($payload));
+    
     $res = appointments_create($payload);
     jsonResponse($res, $res['ok'] ? 200 : 400);
   }

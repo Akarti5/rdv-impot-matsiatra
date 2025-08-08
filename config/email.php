@@ -5,7 +5,7 @@ declare(strict_types=1);
 define('SMTP_HOST', 'smtp.gmail.com');
 define('SMTP_PORT', 587);
 define('SMTP_USERNAME', 'sitrakiniainaeddyfrancisco@gmail.com');
-define('SMTP_PASSWORD', 'your email application password');
+define('SMTP_PASSWORD', 'zqhh egtw goyk apks');
 define('SMTP_SECURE', 'tls');
 define('SMTP_FROM_EMAIL', 'sitrakiniainaeddyfrancisco@gmail.com');
 define('SMTP_FROM_NAME', 'RDV Impôts Matsiatra');

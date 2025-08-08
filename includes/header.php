@@ -12,6 +12,9 @@ $csrf = csrf_token();
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="<?= s(BASE_URL) ?>assets/css/style.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    const BASE_URL = '<?= s(BASE_URL) ?>';
+  </script>
 </head>
 <body>
 <header class="app-header">
